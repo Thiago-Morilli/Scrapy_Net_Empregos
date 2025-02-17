@@ -27,9 +27,13 @@ class EmpregosSpider(scrapy.Spider):
         path = path_json.strip()
         json_info = json.loads(path)
 
-
+        Ref = response.xpath('//div[@class="candidate-listing-footer"]/ul/li[3]/text()').extract_first()
         collecting_data  = {
             "Name": json_info["title"],
-            "description": json_info["description"].replace("\n \n", "").replace("\n", "")
-        }      
-        print(collecting_data)  
+            "Description": json_info["description"].replace("\n \n", "").replace("\n", ""),
+            "Organization": json_info["hiringOrganization"]["name"],
+            "Location": json_info["jobLocation"]["address"]["addressLocality"],
+            "Ref": Ref
+
+        }   
+        
