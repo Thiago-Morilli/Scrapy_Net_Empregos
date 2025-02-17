@@ -37,7 +37,12 @@ class EmpregosSpider(scrapy.Spider):
 
         }   
 
-        yield NetEmpregosItem(
+        """yield NetEmpregosItem(
             collecting_data
-        )
-            
+        )"""
+
+        yield from self.page(response)
+
+    def page(self, response):
+        url = response.xpath('//div[@class="pagination-box pb text-center"]')         
+        print(url)
