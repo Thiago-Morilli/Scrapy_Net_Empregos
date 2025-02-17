@@ -1,7 +1,7 @@
 import scrapy
 import json
 import re
-
+from Net_Empregos.items import NetEmpregosItem
 
 class EmpregosSpider(scrapy.Spider):
     name = "Empregos"
@@ -36,4 +36,8 @@ class EmpregosSpider(scrapy.Spider):
             "Ref": Ref
 
         }   
-        
+
+        yield NetEmpregosItem(
+            collecting_data
+        )
+            
