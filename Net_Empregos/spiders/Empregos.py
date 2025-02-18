@@ -5,8 +5,37 @@ from Net_Empregos.items import NetEmpregosItem
 
 class EmpregosSpider(scrapy.Spider):
     name = "Empregos"
-    allowed_domains = ["www.net-empregos.com"]
-    start_urls = ["https://www.net-empregos.com/pesquisa-empregos.asp?chaves=python&cidade=&categoria=0&zona=0&tipo=0"]
+    domain = "https://www.net-empregos.com/pesquisa-empregos.asp?chaves=python&cidade=&categoria=0&zona=0&tipo=0"
+
+
+    def start_requests(self):
+        
+        yield scrapy.Request(
+            url=self.domain,
+            method="GET",
+            callback=self.parse
+        )
+    
+    def page(self, response):
+        
+        get_url_page = response.xpath('//div[@class="pagination-box pb text-center"]/nav/ul/li[5]/a[@class="page-link oferta-link d-none d-lg-block"]/@href').get()
+        if get_url_page != None:
+            url = "https://www.net-empregos.com/" + get_url_page
+            yield scrapy.Request(
+                url=url,
+                method="GET",                                        
+                callback=self.parse
+            )
+        elif get_url_page == None:
+            get_url_page = response.xpath('//div[@class="pagination-box pb text-center"]/nav/ul/li[6]/a[@class="page-link oferta-link d-none d-lg-block"]/@href').get()
+            if get_url_page:
+                url = "https://www.net-empregos.com/" + get_url_page
+                yield scrapy.Request(
+                    url=url,
+                    method="GET",                                        
+                    callback=self.parse
+                )
+
 
     def parse(self, response):
 
@@ -21,7 +50,7 @@ class EmpregosSpider(scrapy.Spider):
 
         yield from self.page(response) 
 
-                                                                         
+                                                              
     def Jobs(self, response):
         
         
@@ -41,12 +70,9 @@ class EmpregosSpider(scrapy.Spider):
 
         }   
 
-        """yield NetEmpregosItem(
+        yield NetEmpregosItem(
             collecting_data
-        )"""
+        )
 
 
-    def page(self, response):
-        url = response.xpath('//div[@class="pagination-box pb text-center"]/nav/ul/li/a[@class="page-link oferta-link d-none d-lg-block"]').extract_first()
-        print(url)
-        
+    
