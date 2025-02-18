@@ -18,8 +18,12 @@ class EmpregosSpider(scrapy.Spider):
             method="GET",
             callback=self.Jobs
         )
+
+        yield from self.page(response) 
+
                                                                          
     def Jobs(self, response):
+        
         
         path_json = response.xpath('//script[@type="application/ld+json"]/text()').extract_first()
         path_json = path_json.replace("<BR>", "\\n").replace("<br>", "\\n")
@@ -41,8 +45,8 @@ class EmpregosSpider(scrapy.Spider):
             collecting_data
         )"""
 
-        yield from self.page(response)
 
     def page(self, response):
-        url = response.xpath('//div[@class="pagination-box pb text-center"]')         
+        url = response.xpath('//div[@class="pagination-box pb text-center"]/nav/ul/li/a[@class="page-link oferta-link d-none d-lg-block"]').extract_first()
         print(url)
+        
