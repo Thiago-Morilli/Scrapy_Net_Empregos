@@ -71,8 +71,8 @@ class EmpregosSpider(scrapy.Spider):
         }   
 
         yield NetEmpregosItem(
-            collecting_data
-        )
+                collecting_data
+            )
 
 
     
