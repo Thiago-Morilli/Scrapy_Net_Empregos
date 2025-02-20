@@ -39,16 +39,16 @@ class EmpregosSpider(scrapy.Spider):
 
     def parse(self, response):
 
-        get_link = response.xpath('//div[@class="job-item media"]/div/h2/a[@class="oferta-link"]/@href').extract_first()
-        link = "https://www.net-empregos.com/" + get_link
+        for get_link in response.xpath('//div[@class="job-item media"]/div/h2/a[@class="oferta-link"]/@href').getall():
+            link = "https://www.net-empregos.com/" + get_link
 
-        yield scrapy.Request(
-            url=link,
-            method="GET",
-            callback=self.Jobs
-        )
+            yield scrapy.Request(
+                url=link,
+                method="GET",
+                callback=self.Jobs
+            )
 
-        yield from self.page(response) 
+            yield from self.page(response) 
 
                                                               
     def Jobs(self, response):
@@ -70,9 +70,9 @@ class EmpregosSpider(scrapy.Spider):
 
         }   
 
+        print(collecting_data)
         yield NetEmpregosItem(
                 collecting_data
             )
 
 
-    
