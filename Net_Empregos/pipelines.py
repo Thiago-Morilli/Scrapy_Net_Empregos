@@ -2,6 +2,7 @@ import mysql.connector
 from Net_Empregos.items import NetEmpregosItem
 
 
+
 class NetEmpregosPipeline:
     def process_item(self, item, spider):
         #print(item)

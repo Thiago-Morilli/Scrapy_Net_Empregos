@@ -1,6 +1,5 @@
 import scrapy
 
-
 class NetEmpregosItem(scrapy.Item):
 
     Name = scrapy.Field()

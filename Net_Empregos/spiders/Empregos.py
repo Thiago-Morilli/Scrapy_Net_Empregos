@@ -52,7 +52,7 @@ class EmpregosSpider(scrapy.Spider):
 
                                                               
     def Jobs(self, response):
-        
+
         
         path_json = response.xpath('//script[@type="application/ld+json"]/text()').extract_first()
         path_json = path_json.replace("<BR>", "\\n").replace("<br>", "\\n")
